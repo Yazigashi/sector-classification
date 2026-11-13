@@ -96,8 +96,8 @@
         <span class="text-sm text-white font-semibold tracking-wider">By Yazi</span>
     </div>
 
-    <!-- Header -->
-    <header class="text-center max-w-5xl mb-8 w-full pt-2 px-2">
+    <!-- Header (Updated with pt-16 for mobile spacing, shrinking back to pt-2 on PC) -->
+    <header class="text-center max-w-5xl mb-8 w-full pt-16 sm:pt-2 px-2">
         <div class="inline-block title-badge-box rounded-2xl px-5 py-2.5 sm:px-8 sm:py-4 mb-4">
             <h1 class="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-normal sm:tracking-wide title-black-solid whitespace-nowrap">
                 SECTOR CLASSIFICATION
@@ -304,7 +304,6 @@
 
                 clearBtn.classList.remove('hidden');
 
-                // Match suggestions starting with the typed letter(s)
                 currentMatches = jobMappings.filter(item => {
                     const titleParts = item.job.toLowerCase().split('/').map(part => part.trim());
                     const titleStarts = titleParts.some(part => part.startsWith(query));
@@ -315,7 +314,6 @@
                 renderDropdown(currentMatches);
             }
 
-            // Trigger suggestions only when typing/pressing keys
             searchInput.addEventListener('input', () => {
                 filterJobs(searchInput.value);
             });
@@ -325,7 +323,6 @@
                 filterJobs(searchInput.value);
             });
 
-            // Select top match on Enter, close dropdown on Escape
             searchInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && currentMatches.length > 0) {
                     e.preventDefault();
@@ -335,7 +332,6 @@
                 }
             });
 
-            // Clear button
             clearBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 searchInput.value = '';
@@ -346,7 +342,6 @@
                 searchInput.focus();
             });
 
-            // Close dropdown when clicking outside search area
             document.addEventListener('click', (e) => {
                 if (!searchWrapper.contains(e.target)) {
                     hideDropdown();
