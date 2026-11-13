@@ -7,12 +7,71 @@
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts for English and Sinhala -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', 'Noto Sans Sinhala', sans-serif;
-            background-color: #f8fafc;
         }
+
+        /* Animated Background */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .bg-animated {
+            background: linear-gradient(-45deg, #0f172a, #1e3a8a, #0369a1, #0ea5e9);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        /* Glassmorphism Container */
+        .glass-panel {
+            position: relative;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+        }
+        .glass-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Dark Yellow Rounded Box with White Outline */
+        .title-badge-box {
+            background-color: #eab308;
+            border: 3px solid #ffffff;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        /* Solid Black Title */
+        .title-black-solid {
+            color: #000000;
+            font-family: 'Inter', 'Arial Black', sans-serif;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        /* Result Card Reveal Animation */
+        @keyframes cardReveal {
+            from {
+                opacity: 0;
+                transform: translateY(8px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .animate-card-reveal {
+            animation: cardReveal 0.25s ease-out forwards;
+        }
+
         /* Custom scrollbar for dropdown */
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
@@ -29,28 +88,34 @@
         }
     </style>
 </head>
-<body class="text-slate-800 antialiased min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 relative">
+<body class="bg-animated text-slate-800 antialiased min-h-screen flex flex-col items-center pt-5 pb-10 px-4 sm:px-6 relative overflow-x-hidden">
 
-    <!-- Top Right Credit -->
-    <div class="absolute top-4 right-4 sm:right-6 text-xs text-slate-400 font-medium tracking-wider">
-        By Yazi
+    <!-- Top Right Credit with Profile Picture -->
+    <div class="absolute top-4 right-4 sm:right-6 bg-white/10 px-4 py-2 rounded-full backdrop-blur-md border border-white/20 flex items-center gap-3 shadow-sm z-50">
+        <img src="04184.jpg" alt="Yazi" class="w-8 h-8 rounded-full object-cover border border-white/50">
+        <span class="text-sm text-white font-semibold tracking-wider">By Yazi</span>
     </div>
 
     <!-- Header -->
-    <header class="text-center max-w-3xl mb-10 w-full pt-2">
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-2 uppercase tracking-wide">
-            SECTOR CLASSIFICATION
-        </h1>
+    <header class="text-center max-w-5xl mb-8 w-full pt-2 px-2">
+        <div class="inline-block title-badge-box rounded-2xl px-5 py-2.5 sm:px-8 sm:py-4 mb-4">
+            <h1 class="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-normal sm:tracking-wide title-black-solid whitespace-nowrap">
+                SECTOR CLASSIFICATION
+            </h1>
+        </div>
+        <p class="text-blue-50 font-medium tracking-wide text-sm sm:text-lg">
+            Find the correct main and sub sectors for your profession
+        </p>
     </header>
 
     <!-- Main Container -->
-    <main class="w-full max-w-2xl relative z-10">
+    <main class="w-full max-w-2xl relative z-20 glass-panel rounded-3xl p-6 sm:p-8 shadow-2xl">
         
         <!-- Search Section -->
-        <div class="relative w-full mb-8">
+        <div id="searchWrapper" class="relative w-full mb-6">
             <div class="relative flex items-center">
                 <!-- Search Icon -->
-                <svg class="absolute left-4 w-6 h-6 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="absolute left-4 w-6 h-6 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
                 
@@ -58,29 +123,30 @@
                     type="text" 
                     id="searchInput" 
                     autocomplete="off"
-                    class="w-full pl-12 pr-4 py-4 rounded-xl border border-slate-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition-all outline-none" 
+                    spellcheck="false"
+                    class="w-full pl-12 pr-11 py-4 rounded-xl bg-white text-slate-800 border-2 border-transparent shadow-lg focus:ring-4 focus:ring-blue-400/50 focus:border-blue-400 text-base sm:text-lg transition-all outline-none" 
                     placeholder="රැකියාව සොයන්න (Search profession... ex: Farmer, Mason, Driver)"
                 >
                 
                 <!-- Clear Button -->
-                <button id="clearBtn" class="absolute right-4 text-slate-400 hover:text-slate-600 hidden">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button type="button" id="clearBtn" aria-label="Clear search" class="absolute right-4 text-slate-400 hover:text-slate-600 hidden transition-colors p-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
 
             <!-- Autocomplete Dropdown -->
-            <ul id="dropdownMenu" class="absolute z-50 w-full bg-white mt-1 border border-slate-200 rounded-xl shadow-lg max-h-64 overflow-y-auto custom-scrollbar hidden">
-                <!-- Dropdown items will be injected here via JS -->
+            <ul id="dropdownMenu" class="w-full bg-white mt-2 border border-slate-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto custom-scrollbar hidden relative z-50">
+                <!-- Dropdown items injected via JS -->
             </ul>
         </div>
 
         <!-- Result Card -->
-        <div id="resultCard" class="hidden bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden transition-all duration-300 transform scale-95 opacity-0">
+        <div id="resultCard" class="hidden bg-white rounded-2xl shadow-xl border border-white/40 overflow-hidden">
             <!-- Card Header (Job Title) -->
-            <div class="bg-blue-50 border-b border-slate-200 p-6">
-                <p class="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-1">Selected Profession</p>
+            <div class="bg-blue-50 border-b border-blue-100 p-6">
+                <p class="text-xs sm:text-sm font-bold text-blue-600 uppercase tracking-wider mb-1">Selected Profession</p>
                 <h3 id="displayJobTitle" class="text-xl sm:text-2xl font-bold text-slate-800"></h3>
             </div>
             
@@ -88,26 +154,23 @@
             <div class="p-6 space-y-6">
                 <!-- Main Sector -->
                 <div>
-                    <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Main Sector</p>
-                    <div id="displayMainSectorContainer">
-                        <!-- Yellow Highlighted text injected here -->
-                    </div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Main Sector</p>
+                    <div id="displayMainSectorContainer"></div>
                 </div>
 
                 <!-- Divider -->
-                <hr class="border-slate-100">
+                <hr class="border-slate-200">
 
                 <!-- Sub Sector -->
                 <div>
-                    <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Sub Sector</p>
-                    <p id="displaySubSector" class="text-lg font-medium text-slate-700"></p>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Sub Sector</p>
+                    <div id="displaySubSectorContainer"></div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        // Exact Data Mapping Provided
         const jobMappings = [
             { job: "Farmer (Paddy) / වී ගොවියා", keywords: ["farmer", "paddy", "වී", "ගොවියා", "goviya"], main: "AGRICULTURE, FORESTRY & FISHING", sub: "Paddy" },
             { job: "Vegetable/Fruit Farmer / එළවළු ගොවියා", keywords: ["farmer", "vegetable", "fruit", "එළවළු", "පලතුරු"], main: "AGRICULTURE, FORESTRY & FISHING", sub: "Fruits and vegetables" },
@@ -142,148 +205,160 @@
             { job: "Pensioner (Loans) / විශ්‍රාමික", keywords: ["pensioner", "විශ්‍රාමික", "loan"], main: "CONSUMPTION", sub: "Personal loans for pensioners" }
         ];
 
-        // DOM Elements
-        const searchInput = document.getElementById('searchInput');
-        const clearBtn = document.getElementById('clearBtn');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-        const resultCard = document.getElementById('resultCard');
-        
-        const displayJobTitle = document.getElementById('displayJobTitle');
-        const displayMainSectorContainer = document.getElementById('displayMainSectorContainer');
-        const displaySubSector = document.getElementById('displaySubSector');
+        function initSectorApp() {
+            const searchWrapper = document.getElementById('searchWrapper');
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearBtn');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const resultCard = document.getElementById('resultCard');
+            const displayJobTitle = document.getElementById('displayJobTitle');
+            const displayMainSectorContainer = document.getElementById('displayMainSectorContainer');
+            const displaySubSectorContainer = document.getElementById('displaySubSectorContainer');
 
-        // Event Listener for Input
-        searchInput.addEventListener('input', function() {
-            const query = this.value.trim().toLowerCase();
-            
-            // Show/Hide clear button
-            if (query.length > 0) {
+            if (!searchInput || !dropdownMenu || !resultCard) return;
+
+            let currentMatches = [];
+
+            function showDropdown() {
+                dropdownMenu.classList.remove('hidden');
+            }
+
+            function hideDropdown() {
+                dropdownMenu.classList.add('hidden');
+            }
+
+            function showResultCard() {
+                resultCard.classList.remove('hidden', 'animate-card-reveal');
+                void resultCard.offsetWidth;
+                resultCard.classList.add('animate-card-reveal');
+            }
+
+            function hideResultCard() {
+                resultCard.classList.add('hidden');
+                resultCard.classList.remove('animate-card-reveal');
+            }
+
+            function selectJob(jobItem) {
+                searchInput.value = jobItem.job;
                 clearBtn.classList.remove('hidden');
-            } else {
+                hideDropdown();
+
+                displayJobTitle.textContent = jobItem.job;
+
+                displayMainSectorContainer.innerHTML = `
+                    <span class="bg-yellow-300 px-3 py-1.5 font-bold text-gray-900 rounded shadow-sm inline-block">
+                        ${jobItem.main}
+                    </span>
+                `;
+
+                displaySubSectorContainer.innerHTML = `
+                    <span class="bg-green-300 px-3 py-1.5 font-bold text-gray-900 rounded shadow-sm inline-block">
+                        ${jobItem.sub}
+                    </span>
+                `;
+
+                showResultCard();
+            }
+
+            function renderDropdown(matches) {
+                dropdownMenu.innerHTML = '';
+
+                if (matches.length === 0) {
+                    const li = document.createElement('li');
+                    li.className = 'px-4 py-4 text-slate-500 italic';
+                    li.textContent = 'No matching professions found.';
+                    dropdownMenu.appendChild(li);
+                    showDropdown();
+                    return;
+                }
+
+                matches.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'px-4 py-3 hover:bg-blue-50 active:bg-blue-100 cursor-pointer border-b border-slate-100 last:border-none text-slate-700 font-medium flex items-center gap-3 transition-colors';
+                    li.innerHTML = `
+                        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>${item.job}</span>
+                    `;
+                    li.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        selectJob(item);
+                    });
+                    dropdownMenu.appendChild(li);
+                });
+
+                showDropdown();
+            }
+
+            function filterJobs(rawQuery) {
+                const query = (rawQuery || '').trim().toLowerCase();
+
+                if (query.length === 0) {
+                    clearBtn.classList.add('hidden');
+                    hideDropdown();
+                    hideResultCard();
+                    currentMatches = [];
+                    return;
+                }
+
+                clearBtn.classList.remove('hidden');
+
+                // Match suggestions starting with the typed letter(s)
+                currentMatches = jobMappings.filter(item => {
+                    const titleParts = item.job.toLowerCase().split('/').map(part => part.trim());
+                    const titleStarts = titleParts.some(part => part.startsWith(query));
+                    const keywordStarts = item.keywords.some(kw => kw.toLowerCase().startsWith(query));
+                    return titleStarts || keywordStarts;
+                });
+
+                renderDropdown(currentMatches);
+            }
+
+            // Trigger suggestions only when typing/pressing keys
+            searchInput.addEventListener('input', () => {
+                filterJobs(searchInput.value);
+            });
+
+            searchInput.addEventListener('keyup', (e) => {
+                if (['Enter', 'ArrowUp', 'ArrowDown', 'Escape'].includes(e.key)) return;
+                filterJobs(searchInput.value);
+            });
+
+            // Select top match on Enter, close dropdown on Escape
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && currentMatches.length > 0) {
+                    e.preventDefault();
+                    selectJob(currentMatches[0]);
+                } else if (e.key === 'Escape') {
+                    hideDropdown();
+                }
+            });
+
+            // Clear button
+            clearBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                searchInput.value = '';
+                currentMatches = [];
                 clearBtn.classList.add('hidden');
                 hideDropdown();
                 hideResultCard();
-                return;
-            }
-
-            // Filter logic: matches job string OR any keyword
-            const matches = jobMappings.filter(item => {
-                const jobMatch = item.job.toLowerCase().includes(query);
-                const keywordMatch = item.keywords.some(kw => kw.toLowerCase().includes(query));
-                return jobMatch || keywordMatch;
+                searchInput.focus();
             });
 
-            renderDropdown(matches, query);
-        });
-
-        // Function to render dropdown items
-        function renderDropdown(matches, query) {
-            dropdownMenu.innerHTML = ''; // Clear previous
-
-            if (matches.length === 0) {
-                const li = document.createElement('li');
-                li.className = 'px-4 py-3 text-slate-500 italic';
-                li.textContent = 'No matching professions found.';
-                dropdownMenu.appendChild(li);
-                showDropdown();
-                return;
-            }
-
-            matches.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-slate-100 last:border-none text-slate-700 font-medium flex items-center gap-2';
-                
-                // Add a small icon to list items
-                li.innerHTML = `
-                    <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                    </svg>
-                    <span>${item.job}</span>
-                `;
-                
-                // Click event to select job
-                li.addEventListener('click', () => {
-                    selectJob(item);
-                });
-                
-                dropdownMenu.appendChild(li);
+            // Close dropdown when clicking outside search area
+            document.addEventListener('click', (e) => {
+                if (!searchWrapper.contains(e.target)) {
+                    hideDropdown();
+                }
             });
-
-            showDropdown();
         }
 
-        // Function when a job is selected
-        function selectJob(jobItem) {
-            // Update input text
-            searchInput.value = jobItem.job;
-            
-            // Hide dropdown
-            hideDropdown();
-
-            // Populate Card Data
-            displayJobTitle.textContent = jobItem.job;
-            
-            // Inject Main Sector with yellow highlight styling matching the PDF source
-            displayMainSectorContainer.innerHTML = `
-                <span class="bg-yellow-300 px-3 py-1.5 font-bold text-gray-900 rounded shadow-sm inline-block">
-                    ${jobItem.main}
-                </span>
-            `;
-            
-            displaySubSector.textContent = jobItem.sub;
-
-            // Show Card with animation
-            showResultCard();
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSectorApp);
+        } else {
+            initSectorApp();
         }
-
-        // Helper Functions for UI states
-        function showDropdown() {
-            dropdownMenu.classList.remove('hidden');
-        }
-
-        function hideDropdown() {
-            dropdownMenu.classList.add('hidden');
-        }
-
-        function showResultCard() {
-            resultCard.classList.remove('hidden');
-            // Small delay to trigger CSS transition
-            setTimeout(() => {
-                resultCard.classList.remove('scale-95', 'opacity-0');
-                resultCard.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
-
-        function hideResultCard() {
-            resultCard.classList.remove('scale-100', 'opacity-100');
-            resultCard.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                resultCard.classList.add('hidden');
-            }, 300); // Wait for transition to finish
-        }
-
-        // Clear button event
-        clearBtn.addEventListener('click', () => {
-            searchInput.value = '';
-            clearBtn.classList.add('hidden');
-            hideDropdown();
-            hideResultCard();
-            searchInput.focus();
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                hideDropdown();
-            }
-        });
-        
-        // Handle input click to show list if there is value
-        searchInput.addEventListener('click', function() {
-            if (this.value.trim().length > 0 && dropdownMenu.children.length > 0) {
-                showDropdown();
-            }
-        });
     </script>
 </body>
 </html>
